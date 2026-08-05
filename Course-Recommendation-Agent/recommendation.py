@@ -33,12 +33,12 @@ def get_recommendations(student_id: str):
     if not student:
         raise ValueError(f"Student with ID '{student_id}' not found.")
 
-    # Initialize Gemini Client (automatically picks up GEMINI_API_KEY from .env)
-    client = genai.Client()
+    # Initialize Gemini Client explicitly with the environment variable
+    client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
 
     prompt = build_recommendation_prompt(student, courses)
 
-    # Call Gemini Flash for fast and structured reasoning
+    # Call Gemini 3.5 Flash with structured reasoning
     response = client.models.generate_content(
         model='gemini-3.5-flash',
         contents=prompt,
