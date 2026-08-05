@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Course Recommendation Agent</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --badge-bg: #e0e7ff;
+            --badge-text: #3730a3;
+            --high-priority: #fee2e2;
+            --high-priority-text: #991b1b;
+            --radius: 12px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.5;
+            padding: 24px;
+        }
+
+        .app-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            margin-bottom: 24px;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .header p {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        .main-grid {
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 24px;
+        }
+
+        @media (max-width: 900px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .card h2 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .subtitle {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+
+        .form-select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+            margin-bottom: 16px;
+            background-color: #fff;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            width: 100%;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background-color: var(--primary-hover);
+        }
+
+        .btn-primary:disabled {
+            background-color: var(--border-color);
+            cursor: not-allowed;
+            color: var(--text-muted);
+        }
+
+        .catalog-list {
+            max-height: 300px;
+            overflow-y: auto;
+            font-size: 13px;
+        }
+
+        .catalog-item {
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .catalog-item:last-child {
+            border-bottom: none;
+        }
+
+        .catalog-item strong {
+            color: var(--primary);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-muted);
+        }
+
+        .empty-state h3 {
+            margin-bottom: 8px;
+            color: var(--text-main);
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid var(--border-color);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 16px auto;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .student-meta {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .badge {
+            background-color: var(--badge-bg);
+            color: var(--badge-text);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .badge.secondary {
+            background-color: #f1f5f9;
+            color: var(--text-muted);
+        }
+
+        .summary-text {
+            font-size: 15px;
+            color: var(--text-main);
+        }
+
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 16px;
+            margin-top: 12px;
+        }
+
+        .course-card {
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 16px;
+            background: #fff;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .course-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 8px;
+        }
+
+        .course-title {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .priority-badge {
+            font-size: 11px;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 4px;
+            text-transform: uppercase;
+        }
+
+        .priority-high {
+            background-color: var(--high-priority);
+            color: var(--high-priority-text);
+        }
+
+        .priority-medium {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+
+        .priority-low {
+            background-color: #e0f2fe;
+            color: #0369a1;
+        }
+
+        .course-reason {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-top: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <h1>AI Course Recommendation Agent</h1>
+            <p>Smart academic advising powered by Google Gemini</p>
+        </header>
+
+        <!-- Main Content Grid -->
+        <div class="main-grid">
+            <!-- Left Sidebar: Controls & Student Selection -->
+            <aside class="sidebar">
+                <div class="card">
+                    <h2>Select Student</h2>
+                    <p class="subtitle">Choose a profile to analyze:</p>
+                    <select id="studentSelect" class="form-select">
+                        <option value="">-- Loading Students --</option>
+                    </select>
+                    <button id="recommendBtn" class="btn-primary" disabled>Generate AI Recommendations</button>
+                </div>
+
+                <div class="card catalog-card">
+                    <h2>Available Catalog</h2>
+                    <div id="catalogList" class="catalog-list">
+                        <!-- Populated via JS -->
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Right Content: Results Dashboard -->
+            <main class="content-area">
+                <div id="welcomeState" class="card empty-state">
+                    <h3>Ready to Advise</h3>
+                    <p>Select a student profile from the left sidebar and click "Generate AI Recommendations" to build a tailored learning roadmap.</p>
+                </div>
+
+                <div id="loadingState" class="card empty-state hidden">
+                    <div class="spinner"></div>
+                    <h3>Analyzing Student Profile...</h3>
+                    <p>Evaluating prerequisites, career goals, and matching optimal courses using Gemini.</p>
+                </div>
+
+                <div id="resultsContainer" class="hidden">
+                    <!-- Readiness Summary -->
+                    <div class="card summary-card">
+                        <h2>Readiness & Profile Analysis</h2>
+                        <div class="student-meta">
+                            <span id="resStudentName" class="badge"></span>
+                            <span id="resTimeGoal" class="badge secondary"></span>
+                        </div>
+                        <p id="resReadinessSummary" class="summary-text"></p>
+                    </div>
+
+                    <!-- Recommended Courses Grid -->
+                    <div class="card">
+                        <h2>Recommended Learning Path</h2>
+                        <div id="coursesList" class="courses-grid">
+                            <!-- Populated via JS -->
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const studentSelect = document.getElementById('studentSelect');
+            const recommendBtn = document.getElementById('recommendBtn');
+            const catalogList = document.getElementById('catalogList');
+
+            const welcomeState = document.getElementById('welcomeState');
+            const loadingState = document.getElementById('loadingState');
+            const resultsContainer = document.getElementById('resultsContainer');
+
+            const resStudentName = document.getElementById('resStudentName');
+            const resTimeGoal = document.getElementById('resTimeGoal');
+            const resReadinessSummary = document.getElementById('resReadinessSummary');
+            const coursesList = document.getElementById('coursesList');
+
+            // Load initial dropdowns & catalog preview
+            async function init() {
+                try {
+                    // Fetch Students
+                    const studentRes = await fetch('/api/students');
+                    const students = await studentRes.json();
+                    
+                    studentSelect.innerHTML = '<option value="">-- Select a Student --</option>';
+                    students.forEach(student => {
+                        const opt = document.createElement('option');
+                        opt.value = student.student_id;
+                        opt.textContent = `${student.name} (${student.student_id})`;
+                        studentSelect.appendChild(opt);
+                    });
+
+                    // Fetch Courses Catalog Preview
+                    const courseRes = await fetch('/api/courses');
+                    const courses = await courseRes.json();
+
+                    catalogList.innerHTML = '';
+                    courses.forEach(course => {
+                        const div = document.createElement('div');
+                        div.className = 'catalog-item';
+                        div.innerHTML = `<strong>${course.course_id}</strong>:${course.title}`;
+                        catalogList.appendChild(div);
+                    });
+
+                } catch (err) {
+                    console.error("Failed to initialize app data:", err);
+                    studentSelect.innerHTML = '<option value="">Error loading data</option>';
+                }
+            }
+
+            studentSelect.addEventListener('change', () => {
+                recommendBtn.disabled = !studentSelect.value;
+            });
+
+            recommendBtn.addEventListener('click', async () => {
+                const studentId = studentSelect.value;
+                if (!studentId) return;
+
+                // Toggle Views
+                welcomeState.classList.add('hidden');
+                resultsContainer.classList.add('hidden');
+                loadingState.classList.remove('hidden');
+
+                try {
+                    const response = await fetch('/api/recommend', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ student_id: studentId })
+                    });
+
+                    const data = await response.json();
+                    if (!response.ok) throw new Error(data.error || 'Failed to fetch recommendations');
+
+                    // Render Results
+                    resStudentName.textContent = data.student_name || 'Student Profile';
+                    resTimeGoal.textContent = `Est. Time: ${data.estimated_time_to_goal || 'N/A'}`;
+                    resReadinessSummary.textContent = data.readiness_summary || 'No summary provided.';
+
+                    coursesList.innerHTML = '';
+                    if (data.recommended_courses && data.recommended_courses.length > 0) {
+                        data.recommended_courses.forEach(course => {
+                            const priorityClass = `priority-${(course.priority || 'Medium').toLowerCase()}`;
+                            const card = document.createElement('div');
+                            card.className = 'course-card';
+                            card.innerHTML = `
+                                <div>
+                                    <div class="course-header">
+                                        <span class="course-title">${course.course_id}:${course.title}</span>
+                                        <span class="priority-badge ${priorityClass}">${course.priority}</span>
+                                    </div>
+                                    <p class="course-reason">${course.reason}</p>
+                                </div>
+                            `;
+                            coursesList.appendChild(card);
+                        });
+                    } else {
+                        coursesList.innerHTML = '<p>No specific course recommendations found.</p>';
+                    }
+
+                    loadingState.classList.add('hidden');
+                    resultsContainer.classList.remove('hidden');
+
+                } catch (err) {
+                    alert(`Error: ${err.message}`);
+                    loadingState.classList.add('hidden');
+                    welcomeState.classList.remove('hidden');
+                }
+            });
+
+            init();
+        });
+    </script>
+</body>
+</html>

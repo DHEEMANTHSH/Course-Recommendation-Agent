@@ -1,0 +1,16 @@
+[
+  {
+    "student_id": "STU001",
+    "name": "Alex Mercer",
+    "completed_courses": ["CS101", "MATH101"],
+    "current_skills": ["Python", "Problem Solving", "Linear Algebra"],
+    "career_goal": "Become an AI/ML Engineer specializing in Deep Learning models."
+  },
+  {
+    "student_id": "STU002",
+    "name": "Samantha Reed",
+    "completed_courses": ["WD101"],
+    "current_skills": ["HTML", "CSS", "JavaScript"],
+    "career_goal": "Transition into full-stack cloud engineering and DevOps automation."
+  }
+]

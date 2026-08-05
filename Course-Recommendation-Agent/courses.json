@@ -1,0 +1,66 @@
+[
+  {
+    "course_id": "CS101",
+    "title": "Introduction to Computer Science and Python",
+    "category": "Computer Science",
+    "level": "Beginner",
+    "prerequisites": [],
+    "skills": ["Python", "Problem Solving", "Basic Algorithms"],
+    "description": "Learn the fundamentals of programming using Python, covering variables, loops, functions, and basic data structures."
+  },
+  {
+    "course_id": "DS201",
+    "title": "Data Structures and Algorithms in Python",
+    "category": "Computer Science",
+    "level": "Intermediate",
+    "prerequisites": ["CS101"],
+    "skills": ["Python", "Data Structures", "Algorithms", "Performance Optimization"],
+    "description": "Deep dive into essential data structures like trees, graphs, heaps, and sorting algorithms."
+  },
+  {
+    "course_id": "AI301",
+    "title": "Introduction to Artificial Intelligence & Machine Learning",
+    "category": "Artificial Intelligence",
+    "level": "Intermediate",
+    "prerequisites": ["CS101", "Math101"],
+    "skills": ["Machine Learning", "Scikit-Learn", "Data Analysis", "Python"],
+    "description": "Understand core machine learning concepts, regression, classification, and model evaluation techniques."
+  },
+  {
+    "course_id": "DL401",
+    "title": "Deep Learning and Neural Networks",
+    "category": "Artificial Intelligence",
+    "level": "Advanced",
+    "prerequisites": ["AI301"],
+    "skills": ["PyTorch", "Neural Networks", "Computer Vision", "NLP"],
+    "description": "Build, train, and deploy deep neural networks using PyTorch for advanced computer vision and NLP tasks."
+  },
+  {
+    "course_id": "WD101",
+    "title": "Full-Stack Web Development Bootcamp",
+    "category": "Web Development",
+    "level": "Beginner",
+    "prerequisites": [],
+    "skills": ["HTML", "CSS", "JavaScript", "Node.js"],
+    "description": "Comprehensive guide to building modern responsive web applications from scratch using HTML, CSS, JS, and Node."
+  },
+  {
+    "course_id": "CC201",
+    "title": "Cloud Computing & DevOps Essentials",
+    "category": "Cloud Computing",
+    "level": "Intermediate",
+    "prerequisites": ["WD101"],
+    "skills": ["Docker", "AWS", "CI/CD", "Linux"],
+    "description": "Learn containerization, cloud infrastructure management, and automated deployment pipelines."
+  },
+  {
+    "content": "Math101",
+    "course_id": "MATH101",
+    "title": "Engineering Mathematics & Linear Algebra",
+    "category": "Mathematics",
+    "level": "Beginner",
+    "prerequisites": [],
+    "skills": ["Linear Algebra", "Calculus", "Matrices"],
+    "description": "Essential mathematical foundations required for data science, machine learning, and graphics programming."
+  }
+]
