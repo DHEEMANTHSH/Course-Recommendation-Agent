@@ -28,3 +28,14 @@ Course-Recommendation-Agent/
 ├── index.html             # Frontend dashboard UI
 ├── style.css              # Dashboard styles
 └── script.js              # Frontend interactivity & API fetching
+
+## Screenshots
+
+### Application Interface (a)
+![App UI](screenshots/a.png)
+
+### Recommendation Output (b)
+![Output](screenshots/b.png)
+
+### Student Profile View (c)
+![Profile](screenshots/c.png)
